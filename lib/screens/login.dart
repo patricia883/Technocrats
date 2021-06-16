@@ -2,7 +2,8 @@
 import 'dart:ui';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_projects/screens/homepage.dart';
+import 'package:flutter_projects/screens/HomeScreen.dart' as Page;
+import 'package:flutter_projects/screens/home.dart';
 import 'package:flutter_projects/screens/register.dart';
 import 'package:flutter_projects/services/auth.dart';
 import 'package:flutter_projects/src/fluttericon.dart';
@@ -38,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
       await widget.auth.signInWithEmailAndPassword(_email, _password);
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+        MaterialPageRoute(builder: (context) => Page.HomeScreen()),
       );
 
       print("login success");
@@ -129,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
                
               ),
               SizedBox(height: 24),
-              Text.rich(
+              /*Text.rich(
                 TextSpan(text: "New to the YSF IT Solutions?", children: [
                   TextSpan(
                     text: "Register",
@@ -149,7 +150,7 @@ class _LoginPageState extends State<LoginPage> {
                 ]),
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.black),
-              )
+              )*/
               ],
           ),
         ));
