@@ -6,10 +6,13 @@ import 'package:flutter_projects/screens/Customerprofilescreen.dart';
 import 'package:flutter_projects/screens/create_new_customer.dart';
 import 'package:flutter_projects/screens/create_new_technician.dart';
 import 'package:flutter_projects/screens/login.dart';
+import 'package:flutter_projects/services/auth2.dart';
 
 class HomeScreen extends StatelessWidget {
 
   static const routeName = '/home';
+
+  final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +50,8 @@ class HomeScreen extends StatelessWidget {
             ListTile(
               leading: Icon(Icons.logout),
               title: Text("Logout"),
-              onTap: (){
-                _signOut();
+              onTap: () async {
+                dynamic result = await _auth.signOut();
                 Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
               },
             ),

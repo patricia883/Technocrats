@@ -71,10 +71,11 @@ class _LoginPageState extends State<LoginPage> {
         backgroundColor: Colors.orange,
         ),
         body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12),
+          padding: EdgeInsets.symmetric(horizontal: 20),
           child: ListView(
             children: [
               RichText(
+                textAlign: TextAlign.center,
                 text: TextSpan(
                     text: 'Welcome to YSF IT Solutions',
                       style: TextStyle(
@@ -83,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                           fontWeight: FontWeight.bold,
                           color: Colors.orange))
             ),
-              SizedBox(height: 15.0),
+              SizedBox(height: 12.0),
               Image.asset(
                 //image that will appear on login screen
                 "assets/login.jpg",
@@ -98,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                     fontSize: 32,
                   ),
                 ),
-                SizedBox(height: 12),
+                SizedBox(height: 10),
               Form(
                 key: _formKey,
                 child: Column(
@@ -106,14 +107,21 @@ class _LoginPageState extends State<LoginPage> {
                   // crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     SizedBox(
-                      height: 12.0,
+                      height: 18.0,
                     ),
                     // TODO : Implement fields
                     TextFormField(
-                      validator: (input){
-                        if(input.isEmpty){
-                          return 'Please enter an email';
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (String input) {
+                        if (input.isEmpty) {
+                          return 'Please enter an Email';
                         }
+
+                        if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                            .hasMatch(input)) {
+                          return 'Invalid Email';
+                        }
+
                         return null;
                       },
                       onSaved: (input) => _email = input,
@@ -123,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     SizedBox(
-                      height: 20.0,
+                      height: 18.0,
                     ),
                     TextFormField(
                       obscureText: true,
@@ -138,7 +146,7 @@ class _LoginPageState extends State<LoginPage> {
                       onSaved: (input) => _password = input,
                     ),
                     SizedBox(
-                      height: 20.0,
+                      height: 18.0,
                     ),
                     SizedBox(
                       width: 105,
@@ -147,8 +155,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Row(
                           children: <Widget>[
                             Icon(Icons.account_circle_outlined),
-                            new Text('  Sign in'),
-
+                            Text(" Sign in", style: TextStyle(fontWeight: FontWeight.bold)),
                           ],
                         ),
                         shape: RoundedRectangleBorder(
@@ -162,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     SizedBox(
-                      height: 20.0,
+                      height: 18.0,
                     ),
                     Text(
                       error,

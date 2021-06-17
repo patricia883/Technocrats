@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/painting.dart';
 //import 'package:flutter_projects/screens/home/home.dart';
 import 'package:flutter_projects/Shared/constants.dart';
 import 'package:flutter_projects/Shared/loading.dart';
@@ -24,13 +25,18 @@ class _Create_New_TechnicianState extends State<Create_New_Technician> {
   String surname = '';
   String phoneNo = '';
   String role = '';
-
+  String assignedRole = '';
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final AuthService _auth = AuthService();
 
   bool loading = false;
   bool checkedValue = false;
+
+  final List<String> roles = ['Technician', 'Driver' , 'Admin'];
+
+  // form values
+  String _assignedRole;
 
   @override
   Widget build(BuildContext context) {
@@ -45,160 +51,200 @@ class _Create_New_TechnicianState extends State<Create_New_Technician> {
         centerTitle: true,
         backgroundColor: Colors.orange,
       ),
-      body: Wrap(
-        children: <Widget>[
-          Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.symmetric(
-              vertical: 20.0,
-              horizontal: 50.0,
-            ),
-            child: Form(
-              // TODO : implement key
-              key: _formKey,
-              child: Column(
-                // mainAxisAlignment: MainAxisAlignment.center,
-                // crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  // TODO : Implement fields
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+        child: ListView(
+          children: <Widget>[
+            Container(
+              alignment: Alignment.center,
+              padding: EdgeInsets.symmetric(
+                vertical: 20.0,
+                horizontal: 20.0,
+              ),
+              child: Form(
+                // TODO : implement key
+                key: _formKey,
+                child: Column(
+                  // mainAxisAlignment: MainAxisAlignment.center,
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    // TODO : Implement fields
 
-                  // CheckboxListTile(
-                  //   title: Text("Use Default Password ?"),
-                  //   value: checkedValue,
-                  //   onChanged: (newValue) {
-                  //     setState(() {
-                  //       checkedValue = newValue!;
-                  //     });
-                  //   },
-                  //   controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
-                  // ),
-                  // SizedBox(
-                  //   height: 20.0,
-                  // ),
-                  TextFormField(
-                    decoration: textInputDecoration.copyWith(
-                      labelText: 'Name',
-                      prefixIcon: Icon(Icons.person),
-                    ),
-                    validator: (input) => input.isEmpty ? 'Please enter Name' : null,
-                    onChanged: (input) {
-                      setState(() => name = input);
-                    },
-                    onSaved: (input) => name  = input,
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  TextFormField(
-                    decoration: textInputDecoration.copyWith(
-                      labelText: 'Surname',
-                      prefixIcon: Icon(Icons.person),
-                    ),
-                    validator: (input) => input.isEmpty ? 'Please enter Surname' : null,
-                    onChanged: (input) {
-                      setState(() => surname = input);
-                    },
-                    onSaved: (input) => surname = input,
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),TextFormField(
-                    decoration: textInputDecoration.copyWith(
-                      labelText: 'Phone Number',
-                      prefixIcon: Icon(Icons.phone),
-                    ),
-                    validator: (input) => input.length < 10 ? 'Invalid Phone Number' : null,
-                    onChanged: (input) {
-                      setState(() => phoneNo = input);
-                    },
-                    onSaved: (input) => phoneNo = input,
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  TextFormField(
-                    decoration: textInputDecoration.copyWith(
-                      labelText: 'Email',
-                      prefixIcon: Icon(Icons.mail_outline),
-                    ),
-                    validator: (input) => input.isEmpty ? 'Please enter an email' : null,
-                    onChanged: (input) {
-                      setState(() => email = input);
-                    },
-                    onSaved: (input) => email = input,
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  TextFormField(
-                    obscureText: true,
-                    decoration: textInputDecoration.copyWith(
-                      labelText: 'Password',
-                      prefixIcon: Icon(Icons.password),
-                    ),
-                    validator: (input) => input.length < 6 ? 'Password needs to be at least 6 characters' : null,
-                    onChanged: (input) {
-                      setState(() => password = input);
-                    },
-                    onSaved: (input) => password = input,
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  TextFormField(
-                    decoration: textInputDecoration.copyWith(
-                      labelText: 'Role',
-                      prefixIcon: Icon(Icons.info_outline_rounded),
-                    ),
-                    validator: (input) => input.isEmpty ? 'Please specify role' : null,
-                    onChanged: (input) {
-                      setState(() => role = input);
-                    },
-                    onSaved: (input) => role = input,
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  SizedBox(
-                    width: 105,
-                    height: 50,
-                    child: new RaisedButton(
-                      child: Row(
-                        children: <Widget>[
-                          Icon(Icons.save),
-                          new Text(' Save'),
-                        ],
+                    // CheckboxListTile(
+                    //   title: Text("Use Default Password ?"),
+                    //   value: checkedValue,
+                    //   onChanged: (newValue) {
+                    //     setState(() {
+                    //       checkedValue = newValue!;
+                    //     });
+                    //   },
+                    //   controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
+                    // ),
+                    // SizedBox(
+                    //   height: 20.0,
+                    // ),
+                    TextFormField(
+                      decoration: textInputDecoration.copyWith(
+                        labelText: 'Name',
+                        prefixIcon: Icon(Icons.person),
                       ),
-                      shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(16),
-                      ),
-                    ),
-                      color: Colors.orange,
-                      textColor: Colors.white,
-                        onPressed: () async {
-                          if(_formKey.currentState.validate()){
-                            setState(() => loading = true);
-                            dynamic result = await _auth.registerWithEmailAndPassword(email, password, name, surname, phoneNo, role);
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
-                            if(result == null){
-                              setState(() {
-                                loading = false;
-                                //error = 'Please supply a valid email';
-                              });
-                            }
-                          }
+                      validator: (input) => input.isEmpty ? 'Please enter Name' : null,
+                      onChanged: (input) {
+                        setState(() => name = input);
                       },
+                      onSaved: (input) => name  = input,
                     ),
-                  ),
-                ],
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    TextFormField(
+                      decoration: textInputDecoration.copyWith(
+                        labelText: 'Surname',
+                        prefixIcon: Icon(Icons.person),
+                      ),
+                      validator: (input) => input.isEmpty ? 'Please enter Surname' : null,
+                      onChanged: (input) {
+                        setState(() => surname = input);
+                      },
+                      onSaved: (input) => surname = input,
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    TextFormField(
+                      keyboardType: TextInputType.phone,
+                      decoration: textInputDecoration.copyWith(
+                        labelText: 'Phone Number',
+                        prefixIcon: Icon(Icons.phone),
+                      ),
+
+                      validator: (String input) {
+                        if (input.isEmpty) {
+                          return 'Phone number is Required';
+                        }
+                        if (!RegExp(r"^(0|[1-9][0-9]*)$").hasMatch(input)) {
+                          return 'Invalid Phone Number';
+                        }
+                        if(input.length < 10) {
+                          return 'Invalid Phone Number';
+                        }
+                        return null;
+                      },
+
+                      onChanged: (input) {
+                        setState(() => phoneNo = input);
+                      },
+
+                      onSaved: (input) => phoneNo = input,
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    TextFormField(
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: textInputDecoration.copyWith(
+                        labelText: 'Email',
+                        prefixIcon: Icon(Icons.mail),
+                      ),
+                      validator: (String input) {
+                        if (input.isEmpty) {
+                          return 'Please enter an Email';
+                        }
+
+                        if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                            .hasMatch(input)) {
+                          return 'Invalid Email';
+                        }
+
+                        return null;
+                      },
+
+                      onChanged: (input) {
+                        setState(() => email = input);
+                      },
+                      onSaved: (input) => email = input,
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    TextFormField(
+                      obscureText: true,
+                      decoration: textInputDecoration.copyWith(
+                        labelText: 'Password',
+                        prefixIcon: Icon(Icons.password),
+                      ),
+                      validator: (input) => input.length < 6 ? 'Password needs to be at least 6 characters' : null,
+                      onChanged: (input) {
+                        setState(() => password = input);
+                      },
+                      onSaved: (input) => password = input,
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    DropdownButtonFormField(
+                      value: _assignedRole ?? 'Technician',
+                      decoration: textInputDecoration.copyWith(prefixIcon: Icon(Icons.info)),
+                      items: roles.map((roles) {
+                        return DropdownMenuItem(
+                          value: roles,
+                          child: Text('$roles'),
+                        );
+                      }).toList(),
+                      onChanged: (val) => setState(() => _assignedRole = val.toString() ),
+                      onSaved: (val) => _assignedRole = val.toString(),
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    SizedBox(
+                      width: 105,
+                      height: 50,
+                      child: new RaisedButton(
+                        child: Row(
+                          children: <Widget>[
+                            Icon(Icons.save),
+                            Text(" Save", style: TextStyle(fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(16),
+                        ),
+                      ),
+                        color: Colors.orange,
+                        textColor: Colors.white,
+                          onPressed: () async {
+                            if(_formKey.currentState.validate()){
+                              setState(() => loading = true);
+                              if(_assignedRole == null) {
+                                _assignedRole = 'Technician';
+                                dynamic result = await _auth
+                                    .registerWithEmailAndPassword(
+                                    email, password, name, surname, phoneNo,
+                                    _assignedRole);
+                                Navigator.push(context, MaterialPageRoute(
+                                    builder: (context) => HomeScreen()));
+                                if (result == null) {
+                                  setState(() {
+                                    loading = false;
+                                    //error = 'Please supply a valid email';
+                                  });
+                                }
+                              }
+                            }
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
