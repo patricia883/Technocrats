@@ -68,7 +68,8 @@ class _LoginPageState extends State<LoginPage> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text("YSF IT Solutions"),
-        backgroundColor: Colors.orange,
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.orange,
         ),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20),
