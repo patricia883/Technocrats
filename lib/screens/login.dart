@@ -1,9 +1,10 @@
 //import 'dart:html';
 import 'dart:ui';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_projects/Shared/constants.dart';
 import 'package:flutter_projects/screens/HomeScreen.dart' as Page;
-import 'package:flutter_projects/screens/home.dart';
 import 'package:flutter_projects/screens/register.dart';
 import 'package:flutter_projects/services/auth.dart';
 import 'package:flutter_projects/src/fluttericon.dart';
@@ -26,8 +27,8 @@ class _LoginPageState extends State<LoginPage> {
 
   bool _submitted = false;
   bool _isLoading = false;
-  String get _email => _emailController.text;
-  String get _password => _passwordController.text;
+  // String get _email => _emailController.text;
+  // String get _password => _passwordController.text;
 
   void _submit() async {
     print("submit Login called");
@@ -52,20 +53,30 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  final AuthBase _auth = Auth();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  String error = '';
+  bool loading = false;
+
+  String _email = '';
+  String _password = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(title: Text("YSF IT Solutions"),
-        backgroundColor: Colors.orange,),
-        
+        appBar: AppBar(
+          title: Text("YSF IT Solutions"),
+        backgroundColor: Colors.orange,
+        ),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 12),
           child: ListView(
             children: [
               RichText(
                 text: TextSpan(
-                    text: 'Welcome To YSF IT Solutions',
+                    text: 'Welcome to YSF IT Solutions',
                       style: TextStyle(
                           fontSize: 24.0,
                           height: 2,
@@ -74,62 +85,156 @@ class _LoginPageState extends State<LoginPage> {
             ),
               SizedBox(height: 15.0),
               Image.asset(
-                "assets/login.jpg", //image that will appear on login screen
+                //image that will appear on login screen
+                "assets/login.jpg",
                 height: 250,
               ),
               Text(
-                "Login", //appears at top of login screen to indicate to users that this is the login page
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color:  Colors.orange,
-                  fontSize: 32,
-                ),
-              ),
-              SizedBox(height: 12),
-                AppTextField(
-                  //username field on login form
-                  controller: _emailController,
-                  hint: "Email or Username",
-                  icon: FlutterIcons.account_circle,
-                  helpContent: Text(
-                    "Forgot?",
-                    style: TextStyle(fontSize: 16, color:  Colors.orange),
-                  ),
-                  helpOnTap: () {},
-                ),
-              SizedBox(height: 12),
-              AppTextField(
-                //password field on login screen
-                obscure: true,
-                controller: _passwordController,
-                hint: "Password",
-                icon: FlutterIcons.add,
-                helpContent: Text(
-                  "",
-                  style: TextStyle(fontSize: 16, color: Themes.colorPrimary),
-                ),
-                helpOnTap: () {},
-              ),
-              SizedBox(height: 12),
-              FlatButton(
-                //login button
-                color:  Colors.orange,
-                padding: EdgeInsets.all(16),
-                child: Text(
-                  "Login",
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(16),
+                  //appears at top of login screen to indicate to users that this is the login page
+                "Login",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color:  Colors.orange,
+                    fontSize: 32,
                   ),
                 ),
-                onPressed: () {
-                  _submit();
-                },
-               
-              ),
-              SizedBox(height: 24),
+                SizedBox(height: 12),
+              Form(
+                key: _formKey,
+                child: Column(
+                  // mainAxisAlignment: MainAxisAlignment.center,
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 12.0,
+                    ),
+                    // TODO : Implement fields
+                    TextFormField(
+                      validator: (input){
+                        if(input.isEmpty){
+                          return 'Please enter an email';
+                        }
+                        return null;
+                      },
+                      onSaved: (input) => _email = input,
+                      decoration: textInputDecoration.copyWith(
+                        labelText: 'Email',
+                        prefixIcon: Icon(Icons.mail_outline),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    TextFormField(
+                      obscureText: true,
+                      decoration: textInputDecoration.copyWith(
+                        labelText: 'Password',
+                        prefixIcon: Icon(Icons.password),
+                      ),
+                      validator: (val) => val.length < 6 ? 'Password needs to be at least 6 characters' : null,
+                      // onChanged: (val) {
+                      //   setState(() => _password = val);
+                      // },
+                      onSaved: (input) => _password = input,
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    SizedBox(
+                      width: 105,
+                      height: 50,
+                      child: new RaisedButton(
+                        child: Row(
+                          children: <Widget>[
+                            Icon(Icons.account_circle_outlined),
+                            new Text('  Sign in'),
+
+                          ],
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(16),
+                          ),
+                        ),
+                        color: Colors.orange,
+                        textColor: Colors.white,
+                        onPressed: signIn,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Text(
+                      error,
+                      style: TextStyle(color: Colors.red, fontSize: 14.0),
+                    ),
+                  ],
+                ),
+
+                //   child: Text(
+                //     "Login",
+                //     style: TextStyle(color: Colors.white, fontSize: 16),
+                //   ),
+                //   shape: RoundedRectangleBorder(
+                //     borderRadius: BorderRadius.all(
+                //       Radius.circular(16),
+                //     ),
+                //   ),
+
+              //   Text(
+              //   //appears at top of login screen to indicate to users that this is the login page
+              // "Login",
+              //   style: TextStyle(
+              //     fontWeight: FontWeight.bold,
+              //     color:  Colors.orange,
+              //     fontSize: 32,
+              //   ),
+              // ),
+              // SizedBox(height: 12),
+              //   AppTextField(
+              //     //username field on login form
+              //     controller: _emailController,
+              //     hint: "Email or Username",
+              //     icon: FlutterIcons.account_circle,
+              //     helpContent: Text(
+              //       "Forgot?",
+              //       style: TextStyle(fontSize: 16, color:  Colors.orange),
+              //     ),
+              //     helpOnTap: () {},
+              //   ),
+              // SizedBox(height: 12),
+              // AppTextField(
+              //   //password field on login screen
+              //   obscure: true,
+              //   controller: _passwordController,
+              //   hint: "Password",
+              //   icon: FlutterIcons.add,
+              //   helpContent: Text(
+              //     "",
+              //     style: TextStyle(fontSize: 16, color: Themes.colorPrimary),
+              //   ),
+              //   helpOnTap: () {},
+              // ),
+              // SizedBox(height: 12),
+              // FlatButton(
+              //   //login button
+              //   color:  Colors.orange,
+              //   padding: EdgeInsets.all(16),
+              //   child: Text(
+              //     "Login",
+              //     style: TextStyle(color: Colors.white, fontSize: 16),
+              //   ),
+              //   shape: RoundedRectangleBorder(
+              //     borderRadius: BorderRadius.all(
+              //       Radius.circular(16),
+              //     ),
+              //   ),
+              //   onPressed: () {
+              //     _submit();
+              //   },
+              //
+              // ),
+              // SizedBox(height: 24),
               /*Text.rich(
                 TextSpan(text: "New to the YSF IT Solutions?", children: [
                   TextSpan(
@@ -151,8 +256,36 @@ class _LoginPageState extends State<LoginPage> {
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.black),
               )*/
+              ),
               ],
           ),
         ));
   }
+
+  Future<void> signIn() async{
+    // TODO : validated fields
+    final formState = _formKey.currentState;
+
+    if(formState.validate()){
+      // TODO : Sign in to firebase
+      formState.save();
+
+      try{
+        UserCredential user = await FirebaseAuth.instance.
+        signInWithEmailAndPassword(email: _email, password: _password);
+        setState(() => loading = true);
+
+        // TODO : Navigate to home
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Page.HomeScreen()));
+
+      }catch(e){
+        print(e.toString());
+      }
+
+    }else{
+      loading = false;
+      error = 'Authentication Failed';
+    }
+  }
+
 }
