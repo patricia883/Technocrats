@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_projects/screens/Customerprofilescreen.dart';
-import 'package:flutter_projects/screens/HomeScreen.dart';
+import 'package:flutter_projects/screens/admin_dashboard.dart';
 import 'package:flutter_projects/services/auth.dart';
 import 'package:flutter_projects/services/landing_page.dart';
 

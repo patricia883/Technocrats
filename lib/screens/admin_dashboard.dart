@@ -7,6 +7,7 @@ import 'package:flutter_projects/screens/create_new_customer.dart';
 import 'package:flutter_projects/screens/create_new_technician.dart';
 import 'package:flutter_projects/screens/login.dart';
 import 'package:flutter_projects/services/auth2.dart';
+import 'package:toast/toast.dart';
 
 class HomeScreen extends StatelessWidget {
 
@@ -18,7 +19,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('YSF IT Solutions'),
+        title: Text('YSF IT Solutions', style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
         backgroundColor: Colors.orange,
       ),
@@ -53,6 +54,7 @@ class HomeScreen extends StatelessWidget {
               onTap: () async {
                 dynamic result = await _auth.signOut();
                 Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                Toast.show("Logged out Successfully", context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
               },
             ),
           ],
@@ -75,7 +77,7 @@ class HomeScreen extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       Icon(Icons.person_add, size: 70.0,),
-                      Text("New Technician",
+                      Text("New Employee",
                         style: new TextStyle(
                             fontSize: 17.0),
                       )
@@ -128,6 +130,23 @@ class HomeScreen extends StatelessWidget {
                   ),
                 )
             ),
+
+            Card(
+                margin: EdgeInsets.all(8.0),
+                child: InkWell(
+                  onTap: (){},
+                  splashColor: Colors.orange,
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Icon(Icons.work, size: 70.0,),
+                        Text("Manage Callouts",style: new TextStyle(fontSize: 17.0),)
+                      ],
+                    ),
+                  ),
+                )
+            ),
           ]
         ),
       ),
@@ -135,8 +154,14 @@ class HomeScreen extends StatelessWidget {
   }
 
   Future <void> _signOut() async{
-    await FirebaseAuth.instance.signOut();
-    User user = await FirebaseAuth.instance.currentUser;
+
+    try{
+      await FirebaseAuth.instance.signOut();
+      User user = await FirebaseAuth.instance.currentUser;
+    }catch(e){
+      print(e.toString());
+    }
+
   }
 
 }

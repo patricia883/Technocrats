@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_projects/screens/HomeScreen.dart';
+import 'package:flutter_projects/screens/admin_dashboard.dart';
 
 class CustomerProfileScreen extends StatefulWidget {
   static const routeName = '/customerprofile';

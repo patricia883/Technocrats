@@ -7,8 +7,9 @@ import 'package:flutter/painting.dart';
 //import 'package:flutter_projects/screens/home/home.dart';
 import 'package:flutter_projects/Shared/constants.dart';
 import 'package:flutter_projects/Shared/loading.dart';
-import 'package:flutter_projects/screens/HomeScreen.dart';
+import 'package:flutter_projects/screens/admin_dashboard.dart';
 import 'package:flutter_projects/services/auth2.dart';
+import 'package:toast/toast.dart';
 
 class Create_New_Technician extends StatefulWidget {
   const Create_New_Technician({Key key}) : super(key: key);
@@ -32,6 +33,7 @@ class _Create_New_TechnicianState extends State<Create_New_Technician> {
 
   bool loading = false;
   bool checkedValue = false;
+  bool _passwordVisible = false;
 
   final List<String> roles = ['Technician', 'Driver' , 'Admin'];
 
@@ -47,7 +49,7 @@ class _Create_New_TechnicianState extends State<Create_New_Technician> {
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen())),
         ),
-        title: Text("Create new Technician Profile"),
+        title: Text("Create New Employee Profile" , style: TextStyle(fontWeight: FontWeight.bold)) ,
         centerTitle: true,
         backgroundColor: Colors.orange,
       ),
@@ -86,116 +88,142 @@ class _Create_New_TechnicianState extends State<Create_New_Technician> {
                     // SizedBox(
                     //   height: 20.0,
                     // ),
-                    TextFormField(
-                      decoration: textInputDecoration.copyWith(
-                        labelText: 'Name',
-                        prefixIcon: Icon(Icons.person),
+                    SizedBox(
+                      width: 500.0,
+                      child: TextFormField(
+                        decoration: textInputDecoration.copyWith(
+                          labelText: 'Name',
+                          prefixIcon: Icon(Icons.person),
+                        ),
+                        validator: (input) => input.isEmpty ? 'Please enter Name' : null,
+                        onChanged: (input) {
+                          setState(() => name = input);
+                        },
+                        onSaved: (input) => name  = input,
                       ),
-                      validator: (input) => input.isEmpty ? 'Please enter Name' : null,
-                      onChanged: (input) {
-                        setState(() => name = input);
-                      },
-                      onSaved: (input) => name  = input,
                     ),
                     SizedBox(
                       height: 20.0,
                     ),
-                    TextFormField(
-                      decoration: textInputDecoration.copyWith(
-                        labelText: 'Surname',
-                        prefixIcon: Icon(Icons.person),
+                    SizedBox(
+                      width: 500.0,
+                      child: TextFormField(
+                        decoration: textInputDecoration.copyWith(
+                          labelText: 'Surname',
+                          prefixIcon: Icon(Icons.person),
+                        ),
+                        validator: (input) => input.isEmpty ? 'Please enter Surname' : null,
+                        onChanged: (input) {
+                          setState(() => surname = input);
+                        },
+                        onSaved: (input) => surname = input,
                       ),
-                      validator: (input) => input.isEmpty ? 'Please enter Surname' : null,
-                      onChanged: (input) {
-                        setState(() => surname = input);
-                      },
-                      onSaved: (input) => surname = input,
                     ),
                     SizedBox(
                       height: 20.0,
                     ),
-                    TextFormField(
-                      keyboardType: TextInputType.phone,
-                      decoration: textInputDecoration.copyWith(
-                        labelText: 'Phone Number',
-                        prefixIcon: Icon(Icons.phone),
+                    SizedBox(
+                      width: 500.0,
+                      child: TextFormField(
+                        keyboardType: TextInputType.phone,
+                        decoration: textInputDecoration.copyWith(
+                          labelText: 'Phone Number',
+                          prefixIcon: Icon(Icons.phone),
+                        ),
+
+                        validator: (String input) {
+                          if (input.isEmpty) {
+                            return 'Phone number is Required';
+                          }
+                          if (!RegExp(r"^([0][1-9][0-9]*)$").hasMatch(input)) {
+                            return 'Invalid Phone Number';
+                          }
+                          if(input.length < 10) {
+                            return 'Phone number needs to be 10 digits';
+                          }
+                          return null;
+                        },
+
+                        onChanged: (input) {
+                          setState(() => phoneNo = input);
+                        },
+
+                        onSaved: (input) => phoneNo = input,
                       ),
-
-                      validator: (String input) {
-                        if (input.isEmpty) {
-                          return 'Phone number is Required';
-                        }
-                        if (!RegExp(r"^(0|[1-9][0-9]*)$").hasMatch(input)) {
-                          return 'Invalid Phone Number';
-                        }
-                        if(input.length < 10) {
-                          return 'Invalid Phone Number';
-                        }
-                        return null;
-                      },
-
-                      onChanged: (input) {
-                        setState(() => phoneNo = input);
-                      },
-
-                      onSaved: (input) => phoneNo = input,
                     ),
                     SizedBox(
                       height: 20.0,
                     ),
-                    TextFormField(
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: textInputDecoration.copyWith(
-                        labelText: 'Email',
-                        prefixIcon: Icon(Icons.mail),
+                    SizedBox(
+                      width: 500.0,
+                      child: TextFormField(
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: textInputDecoration.copyWith(
+                          labelText: 'Email',
+                          prefixIcon: Icon(Icons.mail),
+                        ),
+                        validator: (String input) {
+                          if (input.isEmpty) {
+                            return 'Please enter an Email';
+                          }
+
+                          if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                              .hasMatch(input)) {
+                            return 'Invalid Email';
+                          }
+
+                          return null;
+                        },
+
+                        onChanged: (input) {
+                          setState(() => email = input);
+                        },
+                        onSaved: (input) => email = input,
                       ),
-                      validator: (String input) {
-                        if (input.isEmpty) {
-                          return 'Please enter an Email';
-                        }
-
-                        if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                            .hasMatch(input)) {
-                          return 'Invalid Email';
-                        }
-
-                        return null;
-                      },
-
-                      onChanged: (input) {
-                        setState(() => email = input);
-                      },
-                      onSaved: (input) => email = input,
                     ),
                     SizedBox(
                       height: 20.0,
                     ),
-                    TextFormField(
-                      obscureText: true,
-                      decoration: textInputDecoration.copyWith(
-                        labelText: 'Password',
-                        prefixIcon: Icon(Icons.password),
+                    SizedBox(
+                      width: 500.0,
+                      child: TextFormField(
+                        obscureText: !_passwordVisible,
+                        decoration: textInputDecoration.copyWith(
+                          labelText: 'Password',
+                          prefixIcon: Icon(Icons.password),
+                          suffixIcon: IconButton(
+                            icon: Icon(_passwordVisible ? Icons.visibility : Icons.visibility_off),
+                            onPressed: () {
+                              setState(() {
+                                _passwordVisible = !_passwordVisible;
+                              });
+                            },
+                          ),
+                        ),
+                        validator: (input) => input.length < 6 ? 'Password needs to be at least 6 characters' : null,
+                        onChanged: (input) {
+                          setState(() => password = input);
+                        },
+                        onSaved: (input) => password = input,
                       ),
-                      validator: (input) => input.length < 6 ? 'Password needs to be at least 6 characters' : null,
-                      onChanged: (input) {
-                        setState(() => password = input);
-                      },
-                      onSaved: (input) => password = input,
                     ),
                     SizedBox(
                       height: 20.0,
                     ),
-                    DropdownButtonFormField(
-                      value: _assignedRole ?? 'Technician',
-                      decoration: textInputDecoration.copyWith(prefixIcon: Icon(Icons.info)),
-                      items: roles.map((roles) {
-                        return DropdownMenuItem(
-                          value: roles,
-                          child: Text('$roles'),
-                        );
-                      }).toList(),
-                      onChanged: (val) => setState(() => _assignedRole = val.toString() ),
-                      onSaved: (val) => _assignedRole = val.toString(),
+                    SizedBox(
+                      width: 500.0,
+                      child: DropdownButtonFormField(
+                        value: _assignedRole ?? 'Technician',
+                        decoration: textInputDecoration.copyWith(prefixIcon: Icon(Icons.info)),
+                        items: roles.map((roles) {
+                          return DropdownMenuItem(
+                            value: roles,
+                            child: Text('$roles'),
+                          );
+                        }).toList(),
+                        onChanged: (val) => setState(() => _assignedRole = val.toString() ),
+                        onSaved: (val) => _assignedRole = val.toString(),
+                      ),
                     ),
                     SizedBox(
                       height: 20.0,
@@ -222,15 +250,28 @@ class _Create_New_TechnicianState extends State<Create_New_Technician> {
                               setState(() => loading = true);
                               if(_assignedRole == null) {
                                 _assignedRole = 'Technician';
-                                dynamic result = await _auth
-                                    .registerWithEmailAndPassword(
-                                    email, password, name, surname, phoneNo,
-                                    _assignedRole);
+                                dynamic result = await _auth.registerWithEmailAndPassword(
+                                    email, password, name, surname, phoneNo, _assignedRole);
                                 Navigator.push(context, MaterialPageRoute(
                                     builder: (context) => HomeScreen()));
+                                Toast.show("New Employee successfully created", context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
                                 if (result == null) {
                                   setState(() {
                                     loading = false;
+                                    Toast.show("Error ! Please try again", context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
+                                    //error = 'Please supply a valid email';
+                                  });
+                                }
+                              }else{
+                                dynamic result = await _auth.registerWithEmailAndPassword(
+                                    email, password, name, surname, phoneNo, _assignedRole);
+                                Navigator.push(context, MaterialPageRoute(
+                                    builder: (context) => HomeScreen()));
+                                Toast.show("New Employee successfully created", context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
+                                if (result == null) {
+                                  setState(() {
+                                    loading = false;
+                                    Toast.show("Error ! Please try again", context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
                                     //error = 'Please supply a valid email';
                                   });
                                 }

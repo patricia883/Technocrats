@@ -48,7 +48,7 @@ class AuthService {
   Future registerWithEmailAndPassword(String email, String password, String name, String surname, String phoneNo, String role) async {
     try {
       User user = (await _auth.createUserWithEmailAndPassword(email: email, password: password)).user;
-      await DatabaseService(uid: user.uid).updateUserData(email, password, name, surname, phoneNo, role);
+      await DatabaseService(uid: user.uid).updateUserData(email, name, surname, phoneNo, role);
       return user.uid;
     } catch (e) {
       print(e.toString());
