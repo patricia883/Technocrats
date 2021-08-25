@@ -22,8 +22,8 @@ class _Create_New_TechnicianState extends State<Create_New_Technician> {
 
   String email = '';
   String password = '';
-  String name = '';
-  String surname = '';
+  String fullName = '';
+  //String surname = '';
   String phoneNo = '';
   String role = '';
   String assignedRole = '';
@@ -92,36 +92,38 @@ class _Create_New_TechnicianState extends State<Create_New_Technician> {
                       width: 500.0,
                       child: TextFormField(
                         decoration: textInputDecoration.copyWith(
-                          labelText: 'Name',
+                          labelText: 'Full name',
                           prefixIcon: Icon(Icons.person),
                         ),
-                        validator: (input) => input.isEmpty ? 'Please enter Name' : null,
+                        validator: (input) => input.isEmpty ? 'Please enter name in full' : null,
                         onChanged: (input) {
-                          setState(() => name = input);
+                          setState(() => fullName = input);
                         },
-                        onSaved: (input) => name  = input,
+                        onSaved: (input) => fullName  = input,
                       ),
                     ),
                     SizedBox(
                       height: 20.0,
                     ),
-                    SizedBox(
-                      width: 500.0,
-                      child: TextFormField(
-                        decoration: textInputDecoration.copyWith(
-                          labelText: 'Surname',
-                          prefixIcon: Icon(Icons.person),
-                        ),
-                        validator: (input) => input.isEmpty ? 'Please enter Surname' : null,
-                        onChanged: (input) {
-                          setState(() => surname = input);
-                        },
-                        onSaved: (input) => surname = input,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20.0,
-                    ),
+
+                    // SizedBox(
+                    //   width: 500.0,
+                    //   child: TextFormField(
+                    //     decoration: textInputDecoration.copyWith(
+                    //       labelText: 'Surname',
+                    //       prefixIcon: Icon(Icons.person),
+                    //     ),
+                    //     validator: (input) => input.isEmpty ? 'Please enter Surname' : null,
+                    //     onChanged: (input) {
+                    //       setState(() => surname = input);
+                    //     },
+                    //     onSaved: (input) => surname = input,
+                    //   ),
+                    // ),
+                    // SizedBox(
+                    //   height: 20.0,
+                    // ),
+
                     SizedBox(
                       width: 500.0,
                       child: TextFormField(
@@ -250,8 +252,8 @@ class _Create_New_TechnicianState extends State<Create_New_Technician> {
                               setState(() => loading = true);
                               if(_assignedRole == null) {
                                 _assignedRole = 'Technician';
-                                dynamic result = await _auth.registerWithEmailAndPassword(
-                                    email, password, name, surname, phoneNo, _assignedRole);
+                                dynamic result = await _auth.registerUserWithEmailAndPassword(
+                                    email, password, fullName, phoneNo, _assignedRole);
                                 Navigator.push(context, MaterialPageRoute(
                                     builder: (context) => HomeScreen()));
                                 Toast.show("New Employee successfully created", context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
@@ -263,8 +265,8 @@ class _Create_New_TechnicianState extends State<Create_New_Technician> {
                                   });
                                 }
                               }else{
-                                dynamic result = await _auth.registerWithEmailAndPassword(
-                                    email, password, name, surname, phoneNo, _assignedRole);
+                                dynamic result = await _auth.registerUserWithEmailAndPassword(
+                                    email, password, fullName, phoneNo, _assignedRole);
                                 Navigator.push(context, MaterialPageRoute(
                                     builder: (context) => HomeScreen()));
                                 Toast.show("New Employee successfully created", context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);

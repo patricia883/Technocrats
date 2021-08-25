@@ -45,16 +45,29 @@ class AuthService {
   }
 
   // Registers Technician with email and password & Creates new User
-  Future registerWithEmailAndPassword(String email, String password, String name, String surname, String phoneNo, String role) async {
+  Future registerUserWithEmailAndPassword(String email, String password, String fullName, String phoneNo, String role) async {
     try {
       User user = (await _auth.createUserWithEmailAndPassword(email: email, password: password)).user;
-      await DatabaseService(uid: user.uid).updateUserData(email, name, surname, phoneNo, role);
+      await DatabaseService(uid: user.uid).updateUserData(email, fullName, phoneNo, role);
       return user.uid;
     } catch (e) {
       print(e.toString());
       return null;
     }
   }
+
+  Future registerCustomerWithEmailAndPassword(String email, String password, String customerName, String description, String phoneNo, String address) async {
+    try {
+      User user = (await _auth.createUserWithEmailAndPassword(email: email, password: password)).user;
+      await DatabaseService(uid: user.uid).updateCustomerData(email, customerName, description, phoneNo, address);
+      return user.uid;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+
 
   // Sign out
   Future signOut() async {

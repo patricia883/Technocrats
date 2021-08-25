@@ -10,32 +10,27 @@ class DatabaseService {
 
   // Collection reference
   final CollectionReference Users = FirebaseFirestore.instance.collection('Users');
+  final CollectionReference Customers = FirebaseFirestore.instance.collection('Customers');
 
-  Future updateUserData(String email, String name, String surname, String phoneNo, String role) async {
+  Future updateUserData(String email, String fullName, String phoneNo, String role) async {
 
     return await Users.doc(uid).set({
-      'email': email,
-      'name': name,
-      'surname': surname,
-      'phone number': phoneNo,
-      'role': role,
+      'Email': email,
+      'Full name': fullName,
+      'Phone number': phoneNo,
+      'Role': role,
     });
   }
 
-  Future getUsersList() async {
-    List itemList = [];
+  Future updateCustomerData(String email, String customerName, String description, String phoneNo, String address) async {
 
-    try{
-      await Users.get().then((querySnapshot) {
-        querySnapshot.docs.forEach((element) {
-          itemList.add(element.data());
-        });
-      });
-
-    } catch(e){
-      print(e.toString());
-      return null;
-    }
+    return await Customers.doc(uid).set({
+      'Email': email,
+      'Customer name': customerName,
+      'Description': description,
+      'Phone number': phoneNo,
+      'Address': address,
+    });
   }
 
 }

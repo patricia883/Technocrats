@@ -187,20 +187,22 @@ class _Create_Job_CalloutState extends State<Create_Job_Callout> {
                                 child: Text('${value.get('Customer name')}'),
                               );
                             }).toList(),
-                            onChanged: (value) {
-                              debugPrint('selected onchange: $value');
-                              setState(
-                                    () {
-                                  debugPrint('Customer selected: $value');
-                                  // Selected value will be stored
-                                  custName = value;
-                                  // Default dropdown value won't be displayed anymore
-                                  //setDefaultMake = false;
-                                  // Set makeModel to true to display first car from list
-                                  //setDefaultMakeModel = true;
-                                },
-                              );
-                            },
+                                onChanged: (value) => setState(() => _customers = value.toString() ),
+                                onSaved: (value) => _customers = value.toString(),
+                            // onChanged: (value) {
+                            //   debugPrint('selected onchange: $value');
+                            //   setState(
+                            //         () {
+                            //       debugPrint('Customer selected: $value');
+                            //       // Selected value will be stored
+                            //       _customers = value.toString();
+                            //       // Default dropdown value won't be displayed anymore
+                            //       //setDefaultMake = false;
+                            //       // Set makeModel to true to display first car from list
+                            //       //setDefaultMakeModel = true;
+                            //     },
+                            //   );
+                            // },
                           );
                         },
                       ),
@@ -261,7 +263,7 @@ class _Create_Job_CalloutState extends State<Create_Job_Callout> {
                       child: StreamBuilder<QuerySnapshot>(
                         stream: FirebaseFirestore.instance
                             .collection('Users')
-                            .orderBy('name')
+                            .orderBy('Full name')
                             .snapshots(),
                         builder: (BuildContext context,
                             AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -284,24 +286,26 @@ class _Create_Job_CalloutState extends State<Create_Job_Callout> {
                             value: userName,
                             items: snapshot.data.docs.map((value) {
                               return DropdownMenuItem(
-                                value: value.get('name'),
-                                child: Text('${value.get('name')}'),
+                                value: value.get('Full name'),
+                                child: Text('${value.get('Full name')}'),
                               );
                             }).toList(),
-                            onChanged: (value) {
-                              debugPrint('selected onchange: $value');
-                              setState(
-                                    () {
-                                  debugPrint('make selected: $value');
-                                  // Selected value will be stored
-                                  userName = value;
-                                  // Default dropdown value won't be displayed anymore
-                                  //setDefaultMake = false;
-                                  // Set makeModel to true to display first car from list
-                                  //setDefaultMakeModel = true;
-                                },
-                              );
-                            },
+                                onChanged: (value) => setState(() => _technician = value.toString() ),
+                                onSaved: (value) => _customers = _technician.toString(),
+                            // onChanged: (value) {
+                            //   debugPrint('selected onchange: $value');
+                            //   setState(
+                            //         () {
+                            //       debugPrint('make selected: $value');
+                            //       // Selected value will be stored
+                            //       userName = value;
+                            //       // Default dropdown value won't be displayed anymore
+                            //       //setDefaultMake = false;
+                            //       // Set makeModel to true to display first car from list
+                            //       //setDefaultMakeModel = true;
+                            //     },
+                            //   );
+                            // },
                           );
                         },
                       ),
