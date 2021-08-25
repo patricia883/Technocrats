@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:flutter_projects/services/DatabaseManager.dart';
 //import 'package:flutter_projects/models/user.dart';
-import 'package:flutter_projects/services/database.dart';
+import 'package:flutter_projects/services/databaseManager.dart';
 
 class AuthService {
 
@@ -55,7 +55,6 @@ class AuthService {
       return null;
     }
   }
-
 
   // Sign out
   Future signOut() async {

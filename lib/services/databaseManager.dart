@@ -22,4 +22,20 @@ class DatabaseService {
     });
   }
 
+  Future getUsersList() async {
+    List itemList = [];
+
+    try{
+      await Users.get().then((querySnapshot) {
+        querySnapshot.docs.forEach((element) {
+          itemList.add(element.data());
+        });
+      });
+
+    } catch(e){
+      print(e.toString());
+      return null;
+    }
+  }
+
 }

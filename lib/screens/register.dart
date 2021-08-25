@@ -51,7 +51,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       
       appBar: AppBar(title: Text("Registration Page"),
-      backgroundColor: Colors.orange,),
+      backgroundColor: Colors.orange,
+      ),
       body: SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.all(24),

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_projects/screens/Customerprofilescreen.dart';
+import 'package:flutter_projects/screens/create_job_callout.dart';
 import 'package:flutter_projects/screens/create_new_customer.dart';
 import 'package:flutter_projects/screens/create_new_technician.dart';
 import 'package:flutter_projects/screens/login.dart';
@@ -117,7 +118,9 @@ class HomeScreen extends StatelessWidget {
             Card(
                 margin: EdgeInsets.all(8.0),
                 child: InkWell(
-                  onTap: (){},
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Create_Job_Callout()));
+                  },
                   splashColor: Colors.orange,
                   child: Center(
                     child: Column(

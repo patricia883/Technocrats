@@ -32,6 +32,8 @@ dependencies:
   provider: ^5.0.0
   fluttertoast: ^3.1.0
   toast: ^0.1.5
+  syncfusion_flutter_signaturepad: ^19.1.66-beta
+  uuid: ^3.0.4
 
 dev_dependencies:
   flutter_test:
