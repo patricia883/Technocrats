@@ -3,12 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_projects/screens/Customerprofilescreen.dart';
+import 'package:flutter_projects/screens/assign_technician.dart';
 import 'package:flutter_projects/screens/create_job_callout.dart';
 import 'package:flutter_projects/screens/create_new_customer.dart';
 import 'package:flutter_projects/screens/create_new_technician.dart';
 import 'package:flutter_projects/screens/login.dart';
 import 'package:flutter_projects/services/auth2.dart';
 import 'package:toast/toast.dart';
+
 
 class HomeScreen extends StatelessWidget {
 
@@ -150,6 +152,28 @@ class HomeScreen extends StatelessWidget {
                   ),
                 )
             ),
+
+            Card(
+                margin: EdgeInsets.all(8.0),
+                child: InkWell(
+                  onTap: ()
+                  {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => getData()));
+                  },
+                  splashColor: Colors.orange,
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Icon(Icons.work, size: 70.0,),
+                        Text("Assign Nearby Technician",style: new TextStyle(fontSize: 17.0),)
+                      ],
+                    ),
+                  ),
+                  
+                )
+            ),
+
           ]
         ),
       ),

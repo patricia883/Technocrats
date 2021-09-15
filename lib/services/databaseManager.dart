@@ -11,6 +11,7 @@ class DatabaseService {
   // Collection reference
   final CollectionReference Users = FirebaseFirestore.instance.collection('Users');
   final CollectionReference Customers = FirebaseFirestore.instance.collection('Customers');
+  final CollectionReference Technician = FirebaseFirestore.instance.collection('Updated Callouts');
 
   Future updateUserData(String email, String fullName, String phoneNo, String role) async {
 
@@ -31,6 +32,22 @@ class DatabaseService {
       'Phone number': phoneNo,
       'Address': address,
     });
+  }
+
+   Future getUsersList() async {
+    List itemsList = [];
+
+    try {
+      await Technician.get().then((querySnapshot) {
+        querySnapshot.docs.forEach((element) {
+          itemsList.add(element.data);
+        });
+      });
+      return itemsList;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
   }
 
 }

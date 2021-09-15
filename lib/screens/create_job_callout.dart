@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -17,7 +15,7 @@ import 'package:uuid/uuid.dart';
 import 'package:flutter_projects/services/databaseManager.dart';
 
 class Create_Job_Callout extends StatefulWidget {
-  const Create_Job_Callout({Key key}) : super(key: key);
+  const Create_Job_Callout();
 
   @override
   _Create_Job_CalloutState createState() => _Create_Job_CalloutState();
@@ -59,6 +57,7 @@ class _Create_Job_CalloutState extends State<Create_Job_Callout> {
 
 
   // form values
+  // ignore: unused_field
   String _assignedRole;
   String _completed;
   String _customers;
